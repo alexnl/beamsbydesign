@@ -42,7 +42,7 @@ function proposal_post() {
 		'show_ui'               => true,
 		'show_in_menu'          => true,
 		'menu_position'         => 5,
-		'menu_icon'             => 'dashicons-spreadsheet',
+		'menu_icon'             => 'dashicons-media-spreadsheet',
 		'show_in_admin_bar'     => true,
 		'show_in_nav_menus'     => true,
 		'show_in_rest' 			=> true,
