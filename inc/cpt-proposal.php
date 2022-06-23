@@ -35,7 +35,7 @@ function proposal_post() {
 		'label'                 => __( 'Proposal', 'text_domain' ),
 		'description'           => __( 'Add a Proposal', 'text_domain'),
 		'labels'                => $labels,
-		'supports'              => array( 'title', 'revisions'),
+		'supports'              => array( 'title', 'revisions', 'author', 'custom-fields'),
 		'taxonomies'            => array(),
 		'hierarchical'          => false,
 		'public'                => true,
