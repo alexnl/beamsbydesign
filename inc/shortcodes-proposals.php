@@ -2,7 +2,9 @@
 // Proposals Shortcodes
 
 function get_proposals_for_active_user() {
-	$userID = get_current_user_id();
+	$userData = get_userdata(get_current_user_id());
+	$userEmail = $userData->user_email;
+
 	$props = get_posts (
 		array (
 			'post_type'		=> 'proposal',
@@ -11,10 +13,9 @@ function get_proposals_for_active_user() {
 			'order'			=> 'DESC',
 			'post_status'   => 'publish',
 			'meta_key' 		=> 'customer',
-			'meta_value' 	=> $userID,
+			'meta_value' 	=> $userEmail,
 		),
 	);
-
 	$output = '<table class="proposal-table">';
 	$output .= '<thead><tr>';
 		$output .= '<th></th>';
