@@ -92,3 +92,13 @@ function proposal_delivery_address() {
 
 }
 add_shortcode('proposal-address', 'proposal_delivery_address');
+
+function proposal_delivery() {
+	if(is_singular('proposal')) {
+		$delivery = get_field('delivery_required');
+		return 'Delivery Required to Above Address';
+	} else {
+		return '';
+	}
+}
+add_shortcode('delivery-required', 'proposal_delivery');
