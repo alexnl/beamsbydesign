@@ -3,7 +3,7 @@
 function proposal_post() {
 
 	$labels = array(
-		'name'                  => _x( 'Proposal', 'Post Type General Name', 'text_domain' ),
+		'name'                  => _x( 'Proposals', 'Post Type General Name', 'text_domain' ),
 		'singular_name'         => _x( 'Proposal', 'Post Type Singular Name', 'text_domain' ),
 		'menu_name'             => __( 'Proposals', 'text_domain' ),
 		'name_admin_bar'        => __( 'Proposals', 'text_domain' ),
@@ -35,7 +35,7 @@ function proposal_post() {
 		'label'                 => __( 'Proposal', 'text_domain' ),
 		'description'           => __( 'Add a Proposal', 'text_domain'),
 		'labels'                => $labels,
-		'supports'              => array( 'title', 'revisions', 'author', 'custom-fields'),
+		'supports'              => array( 'title', 'revisions', 'custom-fields'),
 		'taxonomies'            => array(),
 		'hierarchical'          => false,
 		'public'                => true,

@@ -23,4 +23,5 @@ function hello_elementor_child_enqueue_scripts() {
 add_action( 'wp_enqueue_scripts', 'hello_elementor_child_enqueue_scripts' );
 
 include_once('inc/cpt-proposal.php');
+include_once('inc/shortcodes-proposals.php');
 include_once('inc/functions-gf.php');
