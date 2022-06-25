@@ -69,3 +69,26 @@ function get_proposals_for_active_user() {
 	return $output;
 }
 add_shortcode('proposals-table', 'get_proposals_for_active_user');
+
+function proposal_delivery_address() {
+	if(is_singular('proposal')) {
+		$address 	= get_field('delivery_address');
+		$address2 	= get_field('delivery_address_line_2');
+		$city 		= get_field('city');
+		$prov 		= get_field('province_state');
+		$zip 		= get_field('zip_postal_code');
+		$country	= get_field('country');
+		if($address2) {
+			$address2 = $address2;
+		} else {
+			$address2 = '';
+		}
+		$output = '<div class="proposal-address"><h6>Address</h6>' . $address . ', ' . $address2 . '<br>' . $city . ', ' . $prov . '<br>' . $country . '&nbsp;&nbsp;' . $zip . '</div>'; 
+	} else {
+		$output = '';
+	}
+
+	return $output;
+
+}
+add_shortcode('proposal-address', 'proposal_delivery_address');
