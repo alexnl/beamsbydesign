@@ -83,7 +83,7 @@ function proposal_delivery_address() {
 		} else {
 			$address2 = '';
 		}
-		$output = '<div class="proposal-address"><h6>Address</h6>' . $address . ', ' . $address2 . '<br>' . $city . ', ' . $prov . '<br>' . $country . '&nbsp;&nbsp;' . $zip . '</div>'; 
+		$output = '<div class="proposal-address">' . $address . ', ' . $address2 . '<br>' . $city . ', ' . $prov . '<br>' . $country . '&nbsp;&nbsp;' . $zip . '</div>'; 
 	} else {
 		$output = '';
 	}
