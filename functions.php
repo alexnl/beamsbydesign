@@ -49,16 +49,23 @@ function remove_admin_bar() {
 	  show_admin_bar(false);
 	}
 }
-
 function my_login_logo_url() {
     return home_url();
 }
 add_filter( 'login_headerurl', 'my_login_logo_url' );
-
 function my_login_logo_url_title() {
     return 'Beams by Design';
 }
 add_filter( 'login_headertext', 'my_login_logo_url_title' );
+
+// Check if user is logged in on proposals page
+add_action( 'template_redirect', 'redirect_if_user_not_logged_in' );
+function redirect_if_user_not_logged_in() {
+	if (!is_user_logged_in() and is_post_type_archive('proposal') or is_singular('proposal')) {
+		wp_redirect('https://leuschner.ca/beams/wp-login.php', 301); 
+		exit;
+	}
+}
 
 include_once('inc/cpt-proposal.php');
 include_once('inc/shortcodes-proposals.php');
