@@ -63,11 +63,36 @@ add_action( 'template_redirect', 'redirect_if_user_not_logged_in' );
 function redirect_if_user_not_logged_in() {
 	if (!is_user_logged_in()) {
 		if(is_post_type_archive('proposal') or is_singular('proposal')) {
-			wp_redirect('https://leuschner.ca/beams/wp-login.php', 301); 
+			$homeURL = get_bloginfo('url');
+			wp_redirect($homeURL . '/wp-login.php', 301); 
 			exit;
 		}
 	}
 }
+
+// create menu
+function create_prop_menu($items, $args) {
+	// var_dump($args);
+	$homeURL = get_bloginfo('url');
+	if( $args->menu == 'menu' ){
+		if(is_user_logged_in()) {
+			$proposals = '<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2" id="menu-item-2">'
+						.'<a class="elementor-item" href="' . $homeURL . '/proposal">Proposals</a></li>';
+			$account = '<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3" id="menu-item-3">'
+						.'<a class="elementor-item" href="' . wp_logout_url() . '">Logout</a></li>';
+		} else {
+			$inquiry = '<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1" id="menu-item-1">'
+						.'<a class="elementor-item" href="' . $homeURL . '/">Inquiry</a></li>';
+			$account = '<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4" id="menu-item-4">'
+						.'<a class="elementor-item" href="' . $homeURL . '/wp-login.php">Login</a></li>';
+		}
+		$items = $inquiry . $proposals . $account;
+	}
+	return $items;
+}
+add_filter( 'wp_nav_menu_items', 'create_prop_menu', 10, 2 );
+
+// var_dump(wp_get_nav_menu_object('menu'));
 
 include_once('inc/cpt-proposal.php');
 include_once('inc/shortcodes-proposals.php');
