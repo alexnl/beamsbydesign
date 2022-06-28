@@ -45,9 +45,9 @@ function get_proposals_for_active_user() {
 				} else {
 					$output .= '<td class="no-project-name">-</td>';
 				}
-				$output .= '<td><div class="fixture-1"><a target="_blank" href="'.$fix1['url'].'"><img src="'.get_stylesheet_directory_uri().'/assets/images/file-lines-solid.svg"> '.$fix1['title'].'</a> ('.$fix1_qty.' qty)</td>';
+				$output .= '<td><div class="fixture-1"><a target="_blank" href="'.wp_get_attachment_url($fix1).'"><img src="'.get_stylesheet_directory_uri().'/assets/images/file-lines-solid.svg"> Attachment</a> ('.$fix1_qty.' qty)</td>';
 				if($fix2) {
-					$output .= '<td><div class="fixture-2"><a target="_blank" href="'.$fix2['url'].'"><img src="'.get_stylesheet_directory_uri().'/assets/images/file-solid.svg"> '.$fix2['title'].'</a> ('.$fix2_qty.' qty)</td>';
+					$output .= '<td><div class="fixture-2"><a target="_blank" href="'.wp_get_attachment_url($fix2).'"><img src="'.get_stylesheet_directory_uri().'/assets/images/file-solid.svg"> Attachment</a> ('.$fix2_qty.' qty)</td>';
 				} else {
 					$output .= '<td class="no-fixture-2"></td>';
 				}
