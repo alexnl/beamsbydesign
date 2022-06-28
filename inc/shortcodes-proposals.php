@@ -59,7 +59,7 @@ function get_proposals_for_active_user() {
 				if($status == 'pending') {
 					$output .= '<td class="status">Pending</td>';	
 				} elseif($status == 'ready' and !empty($cost)) {
-					$output .= '<td class="status payment-button"><a href="#">Make Payment</td>';
+					$output .= '<td class="status payment-button"><a href="'.get_permalink($prop->ID).'">Make Payment</td>';
 				} else {
 					$output .= '<td class="status">Ready</td>';
 				}
@@ -108,3 +108,38 @@ function proposal_delivery() {
 	}
 }
 add_shortcode('delivery-required', 'proposal_delivery');
+
+function fixture_one() {
+	$file = get_field('fixture_1_details_file');
+	$qty = get_field('fixture_1_quantity');
+
+	return '<a class="proposal-file" target="_blank" href="'.$file['url'].'"><img src="'.get_stylesheet_directory_uri().'/assets/images/file-lines-solid.svg">'.$file['title'].' @ '.$qty.' (qty)</a>';
+}
+add_shortcode('fixture-one', 'fixture_one');
+
+function fixture_two() {
+	$file = get_field('fixture_2_details_file');
+	$qty = get_field('fixture_2_quantity');
+
+	return '<a class="proposal-file" target="_blank" href="'.$file['url'].'"><img src="'.get_stylesheet_directory_uri().'/assets/images/file-solid.svg">'.$file['title'].' @ '.$qty.' (qty)</a>';
+}
+add_shortcode('fixture-two', 'fixture_two');
+
+function proposal_costs() {
+	$cost = get_field('price');
+	$ship = get_field('shipping_charge');
+	if($cost) {
+		$output = '<div class="cost-table">';
+		$output.= '<div class="sub-total"><span>Sub-total:</span> $'.number_format($cost, 2, '.', '').'</div>';
+		$output.= '<div class="shipping"><span>Shipping:&nbsp;</span> $'.number_format($ship, 2, '.', '').'</div>';
+		$hst = ($cost+$ship)*0.13;
+		$output.= '<div class="hst"><span>HST:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> $'.number_format($hst, 2, '.', '').'</div>';
+		$total = $cost+$ship+$hst;
+		$output.= '<div class="total"><span>Total:&nbsp;&nbsp;&nbsp;&nbsp;</span> $'.number_format($total, 2, '.', '').'</div>';
+		$output.= '</div>';
+	} else {
+		$output = 'Cost breakdown is pending...';
+	}
+	return $output;
+}
+add_shortcode('proposal-cost-breakdown', 'proposal_costs');
