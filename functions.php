@@ -61,9 +61,11 @@ add_filter( 'login_headertext', 'my_login_logo_url_title' );
 // Check if user is logged in on proposals page
 add_action( 'template_redirect', 'redirect_if_user_not_logged_in' );
 function redirect_if_user_not_logged_in() {
-	if (!is_user_logged_in() and is_post_type_archive('proposal') or is_singular('proposal')) {
-		wp_redirect('https://leuschner.ca/beams/wp-login.php', 301); 
-		exit;
+	if (!is_user_logged_in()) {
+		if(is_post_type_archive('proposal') or is_singular('proposal')) {
+			wp_redirect('https://leuschner.ca/beams/wp-login.php', 301); 
+			exit;
+		}
 	}
 }
 
