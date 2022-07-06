@@ -92,7 +92,13 @@ function create_prop_menu($items, $args) {
 }
 add_filter( 'wp_nav_menu_items', 'create_prop_menu', 10, 2 );
 
-// var_dump(wp_get_nav_menu_object('menu'));
+function gf_enqueue_required_files() {
+    GFCommon::log_debug( __METHOD__ . '(): running.' );
+    if ( is_singular('proposal')) {
+        gravity_form_enqueue_scripts( 3, true );
+    }
+}
+add_action( 'get_header', 'gf_enqueue_required_files' );
 
 include_once('inc/cpt-proposal.php');
 include_once('inc/shortcodes-proposals.php');
