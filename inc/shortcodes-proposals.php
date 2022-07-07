@@ -22,19 +22,21 @@ function get_proposals_for_active_user() {
 			$output .= '<th></th>';
 			$output .= '<th>Submitted</th>';
 			$output .= '<th>Project Name</th>';
-			$output .= '<th>Fixture 1</th>';
-			$output .= '<th>Fixture 2</th>';
+			$output .= '<th>Fixtures</th>';
 			$output .= '<th>Sub-total</th>';
 			$output .= '<th>Status</th>';
 		$output .= '</tr></thead>';
 		$output .= '<tbody>';
 		foreach($props as $prop) {
 			// Get ACF Fields
+			for ($i=1; $i < 16 ; $i++) { 
+				$file = get_field('fixture_'.$i.'_fixture_'.$i.'_details_file', $prop->ID);
+				if(empty($file)) {
+					break;
+				}
+			}
+			$filecount = $i;
 			$status 	= get_field('status', $prop->ID);
-			$fix1 		= get_field('fixture_1_details_file', $prop->ID);
-			$fix1_qty 	= get_field('fixture_1_quantity', $prop->ID);
-			$fix2 		= get_field('fixture_2_details_file', $prop->ID);
-			$fix2_qty 	= get_field('fixture_2_quantity', $prop->ID);
 			$cost 		= get_field('price', $prop->ID);
 			// Output Proposal
 			$output .= '<tr>';
@@ -45,12 +47,7 @@ function get_proposals_for_active_user() {
 				} else {
 					$output .= '<td class="no-project-name">-</td>';
 				}
-				$output .= '<td><div class="fixture-1"><a target="_blank" href="'.wp_get_attachment_url($fix1).'"><img src="'.get_stylesheet_directory_uri().'/assets/images/file-lines-solid.svg"> Attachment</a> ('.$fix1_qty.' qty)</td>';
-				if($fix2) {
-					$output .= '<td><div class="fixture-2"><a target="_blank" href="'.wp_get_attachment_url($fix2).'"><img src="'.get_stylesheet_directory_uri().'/assets/images/file-solid.svg"> Attachment</a> ('.$fix2_qty.' qty)</td>';
-				} else {
-					$output .= '<td class="no-fixture-2"></td>';
-				}
+				$output .= '<td><div class="fixture-1">'.($filecount - 1).' Fixtures Uploaded <a href="'.get_permalink($prop->ID).'">(View)</a></td>';
 				if($cost) {
 					$output .= '<td class="cost">$'.$cost.'</td>';
 				} else {
@@ -109,21 +106,30 @@ function proposal_delivery() {
 }
 add_shortcode('delivery-required', 'proposal_delivery');
 
-function fixture_one() {
-	$file = get_field('fixture_1_details_file');
-	$qty = get_field('fixture_1_quantity');
-
-	return '<a class="proposal-file" target="_blank" href="'.$file['url'].'"><img src="'.get_stylesheet_directory_uri().'/assets/images/file-lines-solid.svg">'.$file['title'].' @ '.$qty.' (qty)</a>';
+function proposal_fixtures() {
+	$output = '<div class="proposal-fixture">';
+	for ($i=1; $i < 16 ; $i++) { 
+		$file = get_field('fixture_'.$i.'_fixture_'.$i.'_details_file');
+		if(empty($file)) {
+			break;
+		}
+		$qty = get_field('fixture_'.$i.'_fixture_'.$i.'_quantity');
+		$fileURL = wp_get_attachment_url($file);
+		$fileMETA = wp_get_attachment_metadata($file);
+		$fileMIME = get_post_mime_type($file);
+		$output.= '<div class="fixture fixture-'.$i.'">';
+		if($fileMIME != 'image/jpeg') {
+			$output.= '<a class="proposal-file" target="_blank" href="'.$fileURL.'"><span>'.$qty.'</span> x <img class="svg" src="'.get_stylesheet_directory_uri().'/assets/images/file-lines-solid.svg"> (<i>file name</i>: '.get_the_title($file).')('.$fileMIME.')</a>';
+		} else {
+			$img = wp_get_attachment_image_src($file, 'thumbnail');
+			$output.= '<a class="proposal-file" target="_blank" href="'.$fileURL.'"><span>'.$qty.'</span> x <img src="'.$img[0].'">(<i>file name</i>: '.$fileMETA['sizes']['thumbnail']['file'].')</a>';
+		}
+		$output.= '</div>';
+	}
+	$output.= '</div>';
+	return $output;
 }
-add_shortcode('fixture-one', 'fixture_one');
-
-function fixture_two() {
-	$file = get_field('fixture_2_details_file');
-	$qty = get_field('fixture_2_quantity');
-
-	return '<a class="proposal-file" target="_blank" href="'.$file['url'].'"><img src="'.get_stylesheet_directory_uri().'/assets/images/file-solid.svg">'.$file['title'].' @ '.$qty.' (qty)</a>';
-}
-add_shortcode('fixture-two', 'fixture_two');
+add_shortcode('proposal-fixtures', 'proposal_fixtures');
 
 function proposal_costs() {
 	$cost = get_field('price');
