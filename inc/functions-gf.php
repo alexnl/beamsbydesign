@@ -6,7 +6,7 @@ function remove_country( $countries ){
     return array( 'Canada', 'United States');
 }
 
-add_action( 'gform_advancedpostcreation_post_after_creation_1', 'add_fixtures_acf_file_ids', 10, 4 );
+add_action( 'gform_advancedpostcreation_post_after_creation', 'add_fixtures_acf_file_ids', 10, 4 );
 function add_fixtures_acf_file_ids( $post_id, $feed, $entry, $form ){
     $file1 = rgar($entry, 'gpml_ids_24');
     if($file1) {
@@ -196,5 +196,58 @@ add_action( 'gform_post_payment_action', 'update_proposal_paid_status', 10, 4 );
 function update_proposal_paid_status($entry, $action) {
     if($action['is_success'] == true) {
         update_post_meta($entry['10'], 'status', 'paid' );
+    }
+}
+
+// Load customer information into New Proposal form hidden fields
+add_filter( 'gform_field_value_customer_first_name', 'populate_customer_first_name' );
+function populate_customer_first_name( $value ) {
+    $userData = get_userdata(get_current_user_id());
+    if($userData) {
+        return $userData->first_name;
+    } else {
+        return '';
+    }
+}
+
+add_filter( 'gform_field_value_customer_last_name', 'populate_customer_last_name' );
+function populate_customer_last_name( $value ) {
+    $userData = get_userdata(get_current_user_id());
+    if($userData) {
+        return $userData->last_name;
+    } else {
+        return '';
+    }
+}
+
+add_filter( 'gform_field_value_customer_company_name', 'populate_customer_company_name' );
+function populate_customer_company_name( $value ) {
+    $userID = get_current_user_id();
+    $company = get_field('company', 'user_'.$userID);
+    if($company) {
+        return $company;
+    } else {
+        return '';
+    }
+}
+
+add_filter( 'gform_field_value_customer_email', 'populate_customer_email' );
+function populate_customer_email( $value ) {
+    $userData = get_userdata(get_current_user_id());
+    if($userData) {
+        return $userData->user_email;
+    } else {
+        return '';
+    }
+}
+
+add_filter( 'gform_field_value_customer_phone', 'populate_customer_phone' );
+function populate_customer_phone( $value ) {
+    $userID = get_current_user_id();
+    $phone = get_field('phone', 'user_'.$userID);
+    if($phone) {
+        return $phone;
+    } else {
+        return '';
     }
 }
