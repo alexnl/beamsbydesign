@@ -191,3 +191,10 @@ function get_proposal_payment_data( $proposal_id ) {
     }
     return $proposal_payment_data;
 }
+
+add_action( 'gform_post_payment_action', 'update_proposal_paid_status', 10, 4 );
+function update_proposal_paid_status($entry, $action) {
+    if($action['is_success'] == true) {
+        update_post_meta($entry['10'], 'status', 'paid' );
+    }
+}
