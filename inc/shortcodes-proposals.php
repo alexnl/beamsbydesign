@@ -38,6 +38,7 @@ function get_proposals_for_active_user() {
 			$filecount = $i;
 			$status 	= get_field('status', $prop->ID);
 			$cost 		= get_field('price', $prop->ID);
+			$payment_details = get_proposal_payment_data($prop->ID);
 			// Output Proposal
 			$output .= '<tr>';
 				$output .= '<td class="proposal-details"><a href="'.get_permalink($prop->ID).'"><img alt="Proposal Details" src="'.get_stylesheet_directory_uri().'/assets/images/square-arrow-up-right-solid.svg"></a></td>';
@@ -53,12 +54,14 @@ function get_proposals_for_active_user() {
 				} else {
 					$output .= '<td class="cost">TBD</td>';
 				}
-				if($status == 'pending') {
-					$output .= '<td class="status">Pending</td>';	
-				} elseif($status == 'ready' and !empty($cost)) {
-					$output .= '<td class="status payment-button"><a href="'.get_permalink($prop->ID).'">Make Payment</td>';
+				if($payment_details['payment-status'] == false) {
+					if($status == 'ready' and !empty($cost)) {
+						$output .= '<td class="status payment-button"><a href="'.get_permalink($prop->ID).'">Make Payment</td>';
+					} else {
+						$output .= '<td class="status">Pending</td>';
+					}	
 				} else {
-					$output .= '<td class="status">Ready</td>';
+					$output .= '<td class="status">--- PAID ---</td>';
 				}
 			$output .= '<tr>';
 		}
@@ -164,7 +167,7 @@ function proposal_payment_form() {
 			$output .= gravity_form( 3, false, false, false, false, true, false, false );
 		}
 	} else {
-		$output .= '<h1 class="payment-confirmation">Thank you for your payment. Your proposal is being processed. We will contact you soon.</h1>';
+		$output .= '<h1 class="payment-confirmation">Thank you for your payment.</h1>';
 	}
 	$output .= '</div>';
 	return $output;
