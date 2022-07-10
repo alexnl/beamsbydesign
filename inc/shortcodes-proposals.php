@@ -134,6 +134,7 @@ add_shortcode('proposal-fixtures', 'proposal_fixtures');
 function proposal_costs() {
 	$cost = get_field('price');
 	$ship = get_field('shipping_charge');
+	$payment_details = get_proposal_payment_data(get_the_ID());
 	if($cost) {
 		$output = '<div class="cost-table">';
 		$output.= '<div class="sub-total"><span>Sub-total:</span> $'.number_format($cost, 2, '.', '').'</div>';
@@ -143,6 +144,9 @@ function proposal_costs() {
 		$total = $cost+$ship+$hst;
 		$output.= '<div class="total"><span>Total:&nbsp;&nbsp;&nbsp;&nbsp;</span> $'.number_format($total, 2, '.', '').'</div>';
 		$output.= '</div>';
+		if($payment_details['payment-status'] == true) {
+			$output .= '<div class="payment-details">Payment made by ' . $payment_details['payment-method'] . ' on ' . $payment_details['payment-date'] . ' (UTC)<br>' . 'Transaction ID: ' . $payment_details['transaction-id'].'</div>';
+		}
 	} else {
 		$output = 'Cost breakdown is pending...';
 	}
