@@ -62,7 +62,7 @@ add_filter( 'login_headertext', 'my_login_logo_url_title' );
 add_action( 'template_redirect', 'redirect_if_user_not_logged_in' );
 function redirect_if_user_not_logged_in() {
 	if (!is_user_logged_in()) {
-		if(is_post_type_archive('proposal') or is_singular('proposal')) {
+		if(is_post_type_archive('proposal') or is_singular('proposal') or is_page(391)) {
 			$homeURL = get_bloginfo('url');
 			wp_redirect($homeURL . '/wp-login.php', 301); 
 			exit;
