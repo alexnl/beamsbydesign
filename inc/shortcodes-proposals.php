@@ -152,12 +152,17 @@ add_shortcode('proposal-cost-breakdown', 'proposal_costs');
 
 function proposal_payment_form() {
 	$cost = get_field('price');
-	$status = get_field('status', $prop->ID);
-	if($cost and $status == 'ready') {
-		GFCommon::log_debug( __METHOD__ . '(): running.' );
-		$output = '<h3>Make Payment</h3>';
-		$output .= gravity_form( 3, false, false, false, false, true, false, false );
-		return $output;
+	$status = get_field('status');
+	$output = '<div class="payment-section">';
+	if(is_proposal_paid(get_the_ID()) == false) {
+		if($cost and $status == 'ready') {
+			$output .= '<h3>Make Payment</h3>';
+			$output .= gravity_form( 3, false, false, false, false, true, false, false );
+		}
+	} else {
+		$output .= '<h1 class="payment-confirmation">Thank you for your payment. Your proposal is being processed. We will contact you soon.</h1>';
 	}
+	$output .= '</div>';
+	return $output;
 }
 add_shortcode('payment-form', 'proposal_payment_form');
