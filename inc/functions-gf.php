@@ -184,11 +184,10 @@ function get_proposal_payment_data( $proposal_id ) {
         )
     );
     $payment_entry = GFAPI::get_entries( 3, $search_criteria);
-    $proposal_payment_data = array();
     if(empty($payment_entry)) {
-        $proposal_payment_data[] = array('payment-status' => false, 'payment-date' => '', 'payment-method' => '', 'transaction-id' => '');
+        $proposal_payment_data = array('payment-status' => false, 'payment-date' => '', 'payment-method' => '', 'transaction-id' => '');
     } else {
-        $proposal_payment_data[] = array('payment-status' => true, 'payment-date' => $payment_entry[0]['payment_date'], 'payment-method' => $payment_entry[0]['payment_method'], 'transaction-id' => $payment_entry[0]['transaction_id']);
+        $proposal_payment_data = array('payment-status' => true, 'payment-date' => $payment_entry[0]['payment_date'], 'payment-method' => $payment_entry[0]['payment_method'], 'transaction-id' => $payment_entry[0]['transaction_id']);
     }
     return $proposal_payment_data;
 }
