@@ -101,6 +101,6 @@ function gf_enqueue_required_files() {
 add_action( 'get_header', 'gf_enqueue_required_files' );
 
 include_once('inc/cpt-proposal.php');
+include_once('inc/functions-gf.php');
 include_once('inc/shortcodes-proposals.php');
 include_once('inc/functions-acf.php');
-include_once('inc/functions-gf.php');
