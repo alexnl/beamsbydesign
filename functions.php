@@ -78,6 +78,7 @@ function create_prop_menu($items, $args) {
 		if(is_user_logged_in()) {
 			$proposals = '<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2" id="menu-item-2">'
 						.'<a class="elementor-item" href="' . $homeURL . '/proposal">Proposals</a></li>';
+			$create_account = '';
 			$account = '<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3" id="menu-item-3">'
 						.'<a class="elementor-item" href="' . wp_logout_url() . '">Logout</a></li>';
 		} else {
@@ -85,8 +86,10 @@ function create_prop_menu($items, $args) {
 						.'<a class="elementor-item" href="' . $homeURL . '/">Inquiry</a></li>';
 			$account = '<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4" id="menu-item-4">'
 						.'<a class="elementor-item" href="' . $homeURL . '/wp-login.php">Login</a></li>';
+			$create_account = '<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5" id="menu-item-5">'
+						.'<a class="elementor-item" href="' . $homeURL . '/create-account">Create Account</a></li>';
 		}
-		$items = $inquiry . $proposals . $account;
+		$items = $inquiry . $proposals . $create_account . $account;
 	}
 	return $items;
 }
@@ -99,6 +102,17 @@ function gf_enqueue_required_files() {
     }
 }
 add_action( 'get_header', 'gf_enqueue_required_files' );
+
+function create_account_form() {
+	if (!is_user_logged_in()) {
+		$output = '<h1>Create Account</h1>';
+		$output.= gravity_form( 5, false, false, false, false, true, false, false );
+	} else {
+		$output = '<a href="'.get_bloginfo('url').'/proposal">You are already logged in. Click here to go to the Proposals Dashboard</a>';
+	}
+	return $output;
+}
+add_shortcode('create-account-form', 'create_account_form');
 
 include_once('inc/cpt-proposal.php');
 include_once('inc/functions-gf.php');
