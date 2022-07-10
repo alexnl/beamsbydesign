@@ -114,3 +114,36 @@ function add_fixtures_acf_file_ids( $post_id, $feed, $entry, $form ){
         update_post_meta( $post_id, 'fixture_15_fixture_15_quantity', $entry['60'] );
     }
 }
+
+add_filter( 'gform_field_value_proposal_cost', 'populate_proposal_cost' );
+function populate_proposal_cost( $value ) {
+    if(is_singular('proposal')) {
+        $cost = get_field('price');
+        if($cost) {
+            return $cost;
+        } else {
+            return '0.00';
+        }
+    } else {
+        return '0.00';
+    }
+}
+
+add_filter( 'gform_field_value_proposal_quantity', 'populate_proposal_quantity' );
+function populate_proposal_quantity( $value ) {
+    return '1';
+}
+
+add_filter( 'gform_field_value_proposal_shipping', 'populate_proposal_shipping' );
+function populate_proposal_shipping( $value ) {
+    if(is_singular('proposal')) {
+        $shipping = get_field('shipping_charge');
+        if($shipping) {
+            return $shipping;
+        } else {
+            return '0.00';
+        }
+    } else {
+        return '0.00';
+    }
+}
