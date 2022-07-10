@@ -27,7 +27,7 @@ function setup_fixture_fields() {
 					),
 				),
 			),
-			'menu_order' => 1,
+			'menu_order' => 5,
 			'position' => 'normal',
 			'style' => 'default',
 			'label_placement' => 'top',
