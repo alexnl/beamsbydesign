@@ -147,3 +147,8 @@ function populate_proposal_shipping( $value ) {
         return '0.00';
     }
 }
+
+add_filter( 'gform_field_value_proposal_id', 'populate_proposal_id' );
+function populate_proposal_id( $value ) {
+    return get_the_ID();
+}
