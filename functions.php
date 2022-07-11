@@ -105,8 +105,8 @@ add_action( 'get_header', 'gf_enqueue_required_files' );
 
 function create_account_form() {
 	if (!is_user_logged_in()) {
-		$output = '<h1>Create Account</h1>';
-		$output.= gravity_form( 5, false, false, false, false, true, false, false );
+		// $output = '<h1>Create Account</h1>';
+		$output = gravity_form( 5, false, false, false, false, true, false, false );
 	} else {
 		$output = '<a href="'.get_bloginfo('url').'/proposal">You are already logged in. Click here to go to the Proposals Dashboard</a>';
 	}
