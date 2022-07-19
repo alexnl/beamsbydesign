@@ -54,14 +54,19 @@ function get_proposals_for_active_user() {
 				} else {
 					$output .= '<td class="cost">TBD</td>';
 				}
-				if($payment_details['payment-status'] == false) {
-					if($status == 'ready' and !empty($cost)) {
-						$output .= '<td class="status payment-button"><a href="'.get_permalink($prop->ID).'">Make Payment</td>';
-					} else {
-						$output .= '<td class="status">Pending</td>';
-					}	
-				} else {
+				if($status == 'pending') {
+					$output .= '<td class="status">Pending</td>';
+				} elseif($status == 'ready' and empty($cost)) {
+					$output .= '<td class="status">Review Proposal</td>';
+				} elseif($status == 'ready' and !empty($cost)) {
+					$output .= '<td class="status payment-button"><a href="'.get_permalink($prop->ID).'">Order Now</td>';
+				} elseif($status == 'paid') {
 					$output .= '<td class="status">--- PAID ---</td>';
+				} elseif($status == 'shipped') {
+					$ship_info = get_field('shipping_info', $prop->ID);
+					$output.= '<td class="status">Shipped via<br><b>'.$ship_info['carrier'].' - '.$ship_info['tracking_number'].'</b></td>';
+				} else {
+					$output.= '<td class="status">Under Review</td>';
 				}
 			$output .= '<tr>';
 		}
@@ -173,3 +178,14 @@ function proposal_payment_form() {
 	return $output;
 }
 add_shortcode('payment-form', 'proposal_payment_form');
+
+function shipping_tracking() {
+	$status = get_field('status');
+	$ship_info = get_field('shipping_info');
+	if($status == 'shipped') {
+		return '<div class="shipping-info">Shipped via <b>' . $ship_info['carrier'] . '</b> - Tracking Number: <b>' . $ship_info['tracking_number'].'</b></div>';
+	} else {
+		return '';
+	}
+}
+add_shortcode('shipping-tracking', 'shipping_tracking');
