@@ -189,3 +189,13 @@ function shipping_tracking() {
 	}
 }
 add_shortcode('shipping-tracking', 'shipping_tracking');
+
+function show_proposal_file() {
+	$proposal = get_field('upload_proposal');
+	if($proposal) {
+		return '<a class="button" target="_blank" href="'.$proposal['url'].'">Click here to View Proposal</a>';
+	} else {
+		return 'We\'re working on your proposal and will notify you when it\'s ready!';
+	}
+}
+add_shortcode('uploaded-proposal', 'show_proposal_file');
