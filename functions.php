@@ -93,7 +93,7 @@ function create_prop_menu($items, $args) {
 			$inquiry = '<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1" id="menu-item-1">'
 						.'<a class="elementor-item" href="' . $homeURL . '/submit-new-request">Tell Us What You Want</a></li>';
 			$signin = '<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4" id="menu-item-4">'
-						.'<a class="elementor-item" href="' . $homeURL . '">Sign In</a></li>';
+						.'<a class="elementor-item" href="' . $homeURL . '/wp-login.php">Sign In</a></li>';
 			// $create_account = '<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5" id="menu-item-5">'
 			// 			.'<a class="elementor-item" href="' . $homeURL . '/create-account">Create Account</a></li>';
 
