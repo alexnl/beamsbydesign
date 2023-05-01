@@ -76,28 +76,36 @@ function create_prop_menu($items, $args) {
 	$homeURL = get_bloginfo('url');
 	if( $args->menu == 'menu' ){
 		if(is_user_logged_in()) {
-			$about = '<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4" id="menu-item-4">'
-						.'<a class="elementor-item" href="' . $homeURL . '/#about">About</a></li>';
+			// $about = '<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4" id="menu-item-4">'
+						// .'<a class="elementor-item" href="' . $homeURL . '/#about">About</a></li>';
 
 			$proposals = '<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2" id="menu-item-2">'
 						.'<a class="elementor-item" href="' . $homeURL . '/proposal">My Account</a></li>';
+			if ( current_user_can( 'employee' ) or current_user_can( 'manager' ) ) {
+				$admin = '<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-6" id="menu-item-6">'
+						.'<a class="elementor-item" href="' . $homeURL . '/wp-admin/edit.php?post_type=proposal">Manage</a></li>';
+			} else {
+				$admin = '';
+			}
+
+
 			$account = '<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3" id="menu-item-3">'
 						.'<a class="elementor-item" href="' . wp_logout_url() . '">Logout</a></li>';
 		
-			$items = $about . $proposals . $account .$items;
+			$items = $about . $proposals . $admin . $account .$items;
 
 		} else {
 			
-			$about = '<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4" id="menu-item-4">'
-						.'<a class="elementor-item" href="' . $homeURL . '/#about">About</a></li>';
+			$create_account = '<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5" id="menu-item-5">'
+						.'<a class="elementor-item" href="' . $homeURL . '/create-account">Create Account</a></li>';
+			// $about = '<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4" id="menu-item-4">'
+			// 			.'<a class="elementor-item" href="' . $homeURL . '/#about">About</a></li>';
 			$inquiry = '<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1" id="menu-item-1">'
 						.'<a class="elementor-item" href="' . $homeURL . '/submit-new-request">Tell Us What You Want</a></li>';
 			$signin = '<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4" id="menu-item-4">'
-						.'<a class="elementor-item" href="' . $homeURL . '/wp-login.php">Sign In</a></li>';
-			// $create_account = '<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5" id="menu-item-5">'
-			// 			.'<a class="elementor-item" href="' . $homeURL . '/create-account">Create Account</a></li>';
+						.'<a class="elementor-item" href="#popup-signin">Sign In</a></li>';
 
-			$items = $about . $inquiry . $signin . $items;
+			$items = $create_account . $inquiry . $signin . $items;
 
 		}
 		
@@ -119,7 +127,7 @@ function create_account_form() {
 		// $output = '<h1>Create Account</h1>';
 		$output = gravity_form( 5, false, false, false, false, true, false, false );
 	} else {
-		$output = '<a href="'.get_bloginfo('url').'/proposal">You are already logged in. Click here to go to the Proposals Dashboard</a>';
+		$output = '<a href="'.get_bloginfo('url').'/proposal">You are already logged in. Click here to go to the Requests Dashboard</a>';
 	}
 	return $output;
 }
